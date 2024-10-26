@@ -21,7 +21,8 @@ const userSchema  =new mongoose.Schema({
         type: String , 
         maxLength : 50 , 
         required :true, 
-        unique: true 
+        unique: true ,
+        lowercase : true 
      } ,
      password : {
         type: String , 
@@ -32,9 +33,30 @@ const userSchema  =new mongoose.Schema({
 })  ; 
 
 // user model or datbase 
-const User = userSchema.model('User' ,  userSchema) ; 
+const User = mongoose.model('User' ,  userSchema) ; 
+// for banking schema 
+// why we had ref means we don't to have an account and balance who don't even have the 
+// bank account so this allows only the guys whi have the bank account 
+const AccountSchema  = mongoose.Schema({
+   userId : {
+      type : mongoose.Schema.Types.ObjectId ,  
+      ref : 'User' , 
+      required  : true
+   } , 
+   balance :  {
+      type : number  , 
+      required : true 
+   }
+})
+
+
+
+
+
+
+const Account  = mongoose.model('Account' ,  AccountSchema)
 
 
 module.exports = {
-    User
+    User , Account
 } ;  

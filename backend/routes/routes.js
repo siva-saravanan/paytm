@@ -1,5 +1,6 @@
 const express = require('express') ; 
 const userRouter = require('./user');
+const accountRouter =require('./accounts') ; 
 const app  = express() ;
 
 /*
@@ -9,7 +10,7 @@ By using express.Router(), you can organize your Express app’s routing logic, 
 */
 const mainrouter  = express.Router() ; 
 app.use('/user' , userRouter) ; 
-
+app.use('/accounts' , accountRouter) ; 
 
 // ths will be our main router for all requests 
 
