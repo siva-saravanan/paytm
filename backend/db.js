@@ -1,62 +1,60 @@
-const mongoose = require('mongoose') ; 
+const { default: mongoose } = require('mongoose');
+const moongoose = require('mongoose') ;
+const { boolean, number } = require('zod');
 
+moongoose.connect('mongodb://localhost:27017/paytm') ;
 
-mongoose.connect('mongodb://localhost:27017/paytm') ;
-
-
-
-// create the user schema 
-const userSchema  =new mongoose.Schema({
-    first_name : {
-        type: String , 
+const userSchema  = new moongoose.Schema({
+    username : {
+        type : String , 
+        required : true  , 
+        unique : true  ,
+        minLength : 3 ,
+        maxLength :  50 ,
+        lowercase :true , 
+        trim  : true 
+    } , 
+    password : {
+        type : String  , 
+        required : true  ,
+        minLength : 8 ,
         maxLength : 50 , 
-        required :true, 
-     } ,
-     last_name : {
-        type: String , 
-        maxLength : 50 , 
-        required :true, 
-     } ,
-     username : {
-        type: String , 
-        maxLength : 50 , 
-        required :true, 
-        unique: true ,
-        lowercase : true 
-     } ,
-     password : {
-        type: String , 
-        minLength : 6 , 
-        required :true, 
-        uniquec : true  
-     } 
-})  ; 
-
-// user model or datbase 
-const User = mongoose.model('User' ,  userSchema) ; 
-// for banking schema 
-// why we had ref means we don't to have an account and balance who don't even have the 
-// bank account so this allows only the guys whi have the bank account 
-const AccountSchema  = mongoose.Schema({
-   userId : {
-      type : mongoose.Schema.Types.ObjectId ,  
-      ref : 'User' , 
-      required  : true
-   } , 
-   balance :  {
-      type : number  , 
-      required : true 
-   }
+    } ,
+    firstName  : {
+        type : String , 
+        required : true  , 
+        unique : true  ,
+        minLength : 3 ,
+        maxLength :  50 ,
+        lowercase :true , 
+        trim  : true 
+ }
+ ,  lastName  : {
+        type : String , 
+            required : true  , 
+            unique : true  ,
+            minLength : 3 ,
+            maxLength :  50 ,
+            lowercase :true , 
+            trim  : true 
+ }
 })
 
+const User = mongoose.model('User' , userSchema) ; 
 
+const accountSchema = new mongoose.Schema({
+    userId : {
+        type : moongoose.Schema.Types.ObjectId , 
+        ref : 'User' ,
+        required :true
+    } , 
+    balance : {
+        type : Number ,
+        required : true
+    }
+})
 
-
-
-
-const Account  = mongoose.model('Account' ,  AccountSchema)
-
-
+const Accounts =  moongoose.model('Accounts' , accountSchema) ; 
 module.exports = {
-    User , Account
-} ;  
+    User , Accounts
+}

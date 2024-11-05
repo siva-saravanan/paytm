@@ -1,42 +1,26 @@
-// verify all the autheticated request the user sends 
-const {JWT_SECRET} = require('./config.js') ;
-const jwt = require('jsonwebtoken')  ; 
 
+const jwt =  require('jsonwebtoken')  ; 
+const { JWT_SECRET } = require('./config');
+const  authMiddleware = (req,res,next) =>{
+    // checks the authorization header and validate the token 
 
-const authMiddleware = (res,req,next)=>{
-    const authHeader  = req.headers.authorization;
-
-    if(!authHeader || !authHeader.startsWith('Bearer')){  // either it is null or it does'nt start with bearer 
-        res.status(403).json({}) ; 
+    const authHeader =  req.headers.authorization ; 
+    if(!authHeader || !authHeader.startsWith('Bearer ')){
+        return res.status(403).json({
+            message : "middle st 1 failed"
+        }) ; 
     }
-    const token  = authHeader.split('')[1] ; // we need the second part as we need the token thing which comes after the Bearer
 
-    //using try and catch 
+    const token =  authHeader.split(' ')[1] ; 
+
     try{
-        const decoded = jwt.verify(
-            token  , JWT_SECRET
-        ) ; 
-        // the decoded will turn into username again as oibject 
-        if(decoded.userId){
-            req.userId = decoded.userId ; 
-            next() ; 
-        }
-        else{
-            res.status(403).json({})
-        }
+        const decoded = jwt.verify( token  ,  JWT_SECRET) ; 
+        req.userId = decoded.userId  ; 
+        next() ;
     }
-    catch{
-        res.status(403).json({
-            message  : ' an error occured '
-        })
+    catch(err){
+        return res.status(411).json({})
     }
 
-
-
-    module.exports = {
-        authMiddleware
-    }
-
-
-
-} ; 
+}
+module.exports = authMiddleware ;

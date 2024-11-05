@@ -1,12 +1,11 @@
-const express = require("express");
-const mainrouter  =require('./routes/routes') ; 
-const app =express() ;  
-const cors = require('cors') ; 
+const express = require("express") ; 
+const app = express() ; 
+const cors  =require("cors") ; // allow frontend to connect with backend 
+const mainRouter = require('./routes/index') ; 
+app.use(cors()) ; 
+app.use(express.json()) ;
 
-app.use(cors()) ; // allows all the links to hit the backend 
-app.use(express.json()) ; // body-parser to read the infos from the json object 
-app.use('api/v1' , mainrouter)  ;
-
-
-app.listen(3000) ; 
-
+app.use("/api/v1" , mainRouter) ;
+app.listen(3000, ()=>{
+    console.log("Server is running on port 3000");
+})  ;
