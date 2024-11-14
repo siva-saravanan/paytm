@@ -8,8 +8,8 @@ export const Dashboard =() =>{
 
 
     return <div className="divide-y-2">
-        <Appbar user = "siva"></Appbar>
-        <Balance balance= {"500000"}></Balance>
+        <Appbar></Appbar>
+        <Balance ></Balance>
         <Users ></Users>
     </div>
 }

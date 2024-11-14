@@ -33,23 +33,31 @@ const navigate  = useNavigate() ;
                     setPassword(e.target.value)
                 }}></InputBox>
                 <Button onPress = { async()=>{
-                        const response =  await axios.post("http://localhost:3000/api/v1/user/signup" ,{
-                            firstName ,
-                            lastName ,
-                            username ,
-                            password
-    
-                        })
                         
-                        if(token){
-                            localStorage.removeItem(token) ; 
-                        }
-                        localStorage.setItem("token" , response.data.token) ; 
-                        navigate("/dashboard")  ;
+                            const response =  await axios.post("http://localhost:3000/api/v1/user/signup" ,{
+                                firstName ,
+                                lastName ,
+                                username ,
+                                password
+        
+                            })
+                            
+                            if(token){
+                                localStorage.removeItem(token) ; 
+                            }
+                            localStorage.setItem("token" , response.data.token) ; 
+                            navigate("/dashboard")  ;
+                        
+                      
                         
                     }
                 }
                      label="sign up"></Button>
+                     { password.length<8 &&
+                        <div className="text-sm text-red-600">password should be of minimum 8 characters</div>
+
+                     }
+                     
                 <BottomWarning content="already have an account ?" to="/signin" buttontext="Signin"></BottomWarning>
             </div>
            
